@@ -141,74 +141,117 @@ mysqli_close($conn);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Input Data Nasabah</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
+    <style>
+        /* Gaya latar belakang */
+        body {
+            background-image: url('img/mabes.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100vh;
+        }
+        .overlay {
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 2rem;
+            border-radius: 8px;
+        }
+        .form-container {
+            max-width: 600px;
+        }
+    </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-    <div class="container mt-5">
-        <h2>Form Input Data Nasabah</h2>
+<div class="d-flex justify-content-center align-items-center vh-100">
+        <div class="container overlay form-container">
+            <h2 class="text-center mb-4">Form Input Data Nasabah</h2>
 
-        <?php if ($success_message): ?>
-            <div class="alert alert-success"><?= $success_message; ?></div>
-        <?php endif; ?>
-        <?php if ($error_message): ?>
-            <div class="alert alert-danger"><?= $error_message; ?></div>
-        <?php endif; ?>
+            <?php if ($success_message): ?>
+                <div class="alert alert-success text-center"><?= $success_message; ?></div>
+            <?php endif; ?>
+            <?php if ($error_message): ?>
+                <div class="alert alert-danger text-center"><?= $error_message; ?></div>
+            <?php endif; ?>
 
-        <form id="nasabahForm" method="POST" action="" enctype="multipart/form-data">
-            <div class="mb-3">
-                <label for="nama" class="form-label">Nama</label>
-                <input type="text" class="form-control" id="nama" name="nama" required>
-            </div>
-            <!-- <div class="mb-3">
-                <label for="nama_marketing" class="form-label">Nama Marketing</label>
-                <input type="text" class="form-control" id="nama_marketing" name="nama_marketing">
-            </div> -->
-            <div class="mb-3">
-                <label for="alamat" class="form-label">Alamat</label>
-                <input type="text" class="form-control" id="alamat" name="alamat" required>
-            </div>
-            <div class="mb-3">
-                <label for="nohp" class="form-label">No HP</label>
-                <input type="text" class="form-control" id="nohp" name="nohp" required>
-            </div>
-            <div class="mb-3">
-                <label for="tanggal_input" class="form-label">Tanggal Input</label>
-                <input type="date" class="form-control" id="tanggal_input" name="tanggal_input" required>
-            </div>
-            <div id="creditFields">
-                <div class="mb-3 row">
-                    <div class="col">
-                        <label for="kredit1" class="form-label">Aplikasi: </label>
-                        <input type="text" class="form-control" name="nama_apk[]" id="kredit1" required>
-                    </div>
-                    <div class="col">
-                        <label for="kredit1" class="form-label">Nominal</label>
-                        <input type="number" class="form-control" name="kredit[]" id="kredit1" required>
+            <form id="nasabahForm" method="POST" action="" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="nama" class="form-label">Nama</label>
+                    <input type="text" class="form-control" id="nama" name="nama" required>
+                </div>
+                <div class="mb-3">
+                    <label for="alamat" class="form-label">Alamat</label>
+                    <input type="text" class="form-control" id="alamat" name="alamat" required>
+                </div>
+                <div class="mb-3">
+                    <label for="nohp" class="form-label">No HP</label>
+                    <input type="text" class="form-control" id="nohp" name="nohp" required>
+                </div>
+                <div class="mb-3">
+                    <label for="tanggal_input" class="form-label">Tanggal Input</label>
+                    <input type="date" class="form-control" id="tanggal_input" name="tanggal_input" required>
+                </div>
+                <div id="creditFields">
+                    <div class="mb-3 row">
+                        <div class="col">
+                            <label for="kredit1" class="form-label">Aplikasi:</label>
+                            <input type="text" class="form-control" name="nama_apk[]" id="kredit1" required>
+                        </div>
+                        <div class="col">
+                            <label for="kredit1" class="form-label">Nominal</label>
+                            <input type="number" class="form-control" name="kredit[]" id="kredit1" required>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <button type="button" id="addCredit" class="btn btn-secondary mb-3">Tambah Kredit</button>
+                <button type="button" id="addCredit" class="btn btn-success mb-3">Tambah Kredit</button>
 
-            <div class="mb-3">
-                <h3>Grand Total: <span id="displayTotalKredit">0</span></h3>
-                <h3>Biaya Admin (20%): <span id="displayBiayaAdmin">0</span></h3>
-            </div>
-            
-            <div class="mb-3">
-                <label for="ktp" class="form-label">Upload KTP</label>
-                <input type="file" class="form-control" id="ktp" name="ktp" accept=".jpg,.jpeg,.png" required>
-            </div>
-            <input type="hidden" name="total_kredit" id="total_kredit">
-            <input type="hidden" name="biaya_admin" id="biaya_admin">
+                <!-- <div class="mb-3">
+                    <h3 class="text-center">Grand Total: <span id="displayTotalKredit">0</span></h3>
+                    <h3 class="text-center">Biaya Admin (20%): <span id="displayBiayaAdmin">0</span></h3>
+                </div> -->
 
-            <button type="submit" name="kirim" class="btn btn-primary">Kirim Data</button>
-        </form>
-        <br>
-        <a href="logout.php" class="btn btn-danger">Logout</a>
+                <table>
+                    <tr>
+                        <td><h3>Grand Total: <span id="displayTotalKredit">0</span></h3></td>
+                    </tr>
+                    <tr>
+                        <td><h3>Biaya Admin (20%): <span id="displayBiayaAdmin">0</span></h3></td>
+                    </tr>
+                </table>
+                
+                <br>
+                <div class="mb-3">
+                    <label for="ktp" class="form-label">Upload KTP</label>
+                    <input type="file" class="form-control" id="ktp" name="ktp" accept=".jpg,.jpeg,.png" required>
+                </div>
+                <input type="hidden" name="total_kredit" id="total_kredit">
+                <input type="hidden" name="biaya_admin" id="biaya_admin">
+
+                <div class="d-grid">
+                    <button type="submit" name="kirim" class="btn btn-primary">Kirim Data</button>
+                </div>
+            </form>
+            <div class="text-center mt-3">
+                <a href="logout.php" class="btn btn-danger">Logout</a>
+            </div>
+        </div>
     </div>
+
+    <script>
+        // Fungsi untuk menambahkan titik pemisah ribuan
+        function formatNumber(number) {
+            return number.replace(/\D/g, '') // Hapus semua karakter non-digit
+                         .replace(/\B(?=(\d{3})+(?!\d))/g, '.'); // Tambahkan titik setiap 3 digit
+        }
+
+        // Event listener untuk input field
+        document.getElementById('kredit1').addEventListener('input', function(e) {
+            let input = e.target.value;
+            e.target.value = formatNumber(input);
+        });
+    </script>
 
     <script>
         $(document).ready(function() {
@@ -225,8 +268,8 @@ mysqli_close($conn);
                 $("#biaya_admin").val(totalKredit * 0.2); // Misalnya 20%
 
                 //update display total kredit dan biaya admin realtime
-                $("displayTotalKredit").text(totalKredit);
-                $("displayBiayaAdmin").text(totalKredit * 0.2);
+                $("#displayTotalKredit").text(totalKredit);
+                $("#displayBiayaAdmin").text((totalKredit * 0.2));
             }
 
             // Handle add credit button
@@ -239,7 +282,7 @@ mysqli_close($conn);
                     </div>
                     <div class="col">
                         <label for="kredit" class="form-label">Kredit</label>
-                        <input type="number" class="form-control" name="kredit[]" required>
+                        <input type="number" class="form-control" id="kredit1" name="kredit[]" required>
                     </div>
                 </div>`;
                 $("#creditFields").append(newCreditRow);

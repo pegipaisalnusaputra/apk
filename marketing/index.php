@@ -163,6 +163,7 @@ mysqli_close($conn);
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/bootstrap.bundle.min.js"></script>
+    
 </head>
 <body>
 <div class="d-flex justify-content-center align-items-center vh-100">
@@ -196,8 +197,8 @@ mysqli_close($conn);
                 <div id="creditFields">
                     <div class="mb-3 row">
                         <div class="col">
-                            <label for="kredit1" class="form-label">Aplikasi:</label>
-                            <input type="text" class="form-control" name="nama_apk[]" id="kredit1" required>
+                            <label for="kredit" class="form-label">Aplikasi:</label>
+                            <input type="text" class="form-control" name="nama_apk[]" id="kredit" required>
                         </div>
                         <div class="col">
                             <label for="kredit1" class="form-label">Nominal</label>
@@ -205,13 +206,22 @@ mysqli_close($conn);
                         </div>
                     </div>
                 </div>
-                <button type="button" id="addCredit" class="btn btn-secondary mb-3">Tambah Kredit</button>
 
-                <div class="mb-3">
-                    <h3 class="text-center">Grand Total: <span id="displayTotalKredit">0</span></h3>
-                    <h3 class="text-center">Biaya Admin (20%): <span id="displayBiayaAdmin">0</span></h3>
-                </div>
                 
+
+                <button type="button" id="addCredit" class="btn btn-success mb-3">Tambah Kredit</button>
+
+                <table cellpadding="10" cellspacing="0" border="1">
+                    <tr>
+                        <td><h3>Grand Total: <span id="displayTotalKredit">0</span></h3></td>
+                    </tr>
+                    <tr>
+                        <td><h3>Biaya Admin (20%): <span id="displayBiayaAdmin">0</span></h3></td>
+                    </tr>
+                </table>
+
+                                
+                <br>
                 <div class="mb-3">
                     <label for="ktp" class="form-label">Upload KTP</label>
                     <input type="file" class="form-control" id="ktp" name="ktp" accept=".jpg,.jpeg,.png" required>
@@ -228,7 +238,7 @@ mysqli_close($conn);
             </div>
         </div>
     </div>
-
+    
     <script>
         $(document).ready(function() {
             let totalKredit = 0;
@@ -245,7 +255,7 @@ mysqli_close($conn);
 
                 //update display total kredit dan biaya admin realtime
                 $("#displayTotalKredit").text(totalKredit);
-                $("#displayBiayaAdmin").text((totalKredit * 0.2).toFixed(2));
+                $("#displayBiayaAdmin").text((totalKredit * 0.2));
             }
 
             // Handle add credit button
@@ -257,8 +267,8 @@ mysqli_close($conn);
                         <input type="text" class="form-control" name="nama_apk[]" required>
                     </div>
                     <div class="col">
-                        <label for="kredit" class="form-label">Kredit</label>
-                        <input type="number" class="form-control" name="kredit[]" required>
+                        <label for="kredit" class="form-label">Nominal</label>
+                        <input type="float" class="form-control" id="kredit1" name="kredit[]" required>
                     </div>
                 </div>`;
                 $("#creditFields").append(newCreditRow);
@@ -268,7 +278,15 @@ mysqli_close($conn);
             $(document).on('input', "input[name='kredit[]']", function() {
                 updateTotals();
             });
+
+            // Update totals when a new credit field is added
+            $(document).on('input', "input[name='nama_apk[]']", function() {
+                    updateTotals();
+            });
         });
+        // Initialize the totals on page load
+        updateTotals();
     </script>
-</body>
+    
+    </body>
 </html>
